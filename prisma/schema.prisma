@@ -1,0 +1,360 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  password      String?   // null for OAuth users
+  image         String?   // avatar URL
+  defaultCurrency String  @default("RUB")
+  
+  // Company/Organization (legacy, use Organization model)
+  companyName   String?
+  companyRole   String?
+  
+  // 2FA
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  
+  // Account management
+  deletedAt     DateTime? // Soft delete with 30-day grace period
+  deletedAtScheduled DateTime? // When deletion was scheduled
+  lastLogin     DateTime?
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  apiKeys       ApiKey[]
+  activityLogs  ActivityLog[]
+  auditLogs     AuditLog[]
+  projects      Project[] @relation("ProjectOwner")
+  projectMembers ProjectMember[]
+  notificationPreferences NotificationPreferences?
+  ownedOrganizations Organization[] @relation("OrganizationOwner")
+  organizationMembers OrganizationMember[]
+  projectShares ProjectShare[] @relation("SharedWithUser")
+  sharedProjects ProjectShare[] @relation("SharedByUser")
+  
+  @@map("users")
+}
+
+enum DepreciationMethod {
+  STRAIGHT_LINE
+  UNITS_OF_PRODUCTION
+}
+
+enum EquipmentCategory {
+  HELICOPTER
+  VEHICLE
+  MACHINERY
+  OTHER
+}
+
+enum CostAllocationMethod {
+  BY_HOURS
+  EQUAL
+  PERCENTAGE
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  userAgent    String?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  key         String   @unique
+  keyHash     String   // Hashed version for security
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("api_keys")
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String
+  action      String   // e.g., "login", "profile_update", "project_create"
+  description String?
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?    // Additional context
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("activity_logs")
+}
+
+model NotificationPreferences {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  emailDigests      Boolean  @default(true)
+  emailAlerts       Boolean  @default(true)
+  projectInvites    Boolean  @default(true)
+  weeklyReports     Boolean  @default(false)
+  monthlyReports    Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  logoUrl     String?
+  currency    String   @default("RUB")
+  ownerId     String
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  owner       User     @relation("OrganizationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members     OrganizationMember[]
+  projects    Project[]
+  
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String   @default("member") // owner, admin, member
+  joinedAt       DateTime @default(now())
+  
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  organizationId String?
+  currency    String   @default("RUB")
+  
+  // Cost allocation settings
+  costAllocationMethod String @default("by_hours") // by_hours, equal, percentage
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  archivedAt  DateTime?
+  
+  owner       User     @relation("ProjectOwner", fields: [ownerId], references: [id])
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  members     ProjectMember[]
+  equipment   Equipment[]
+  operatingParams OperatingParameters[]
+  calculations FinancialCalculation[]
+  auditLogs   AuditLog[]
+  shares     ProjectShare[]
+  
+  @@index([organizationId])
+  @@index([ownerId])
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String?
+  name      String?  // For external members without accounts
+  email     String?  // For external members
+  role      String   @default("member") // owner, admin, member, viewer
+  ownershipShare Decimal @default(0) // Percentage (0-100)
+  operatingHoursPerMonth Decimal @default(0)
+  status    String   @default("active") // active, inactive
+  invitedAt DateTime @default(now())
+  joinedAt  DateTime?
+  updatedAt DateTime @updatedAt
+  
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@map("project_members")
+}
+
+model Equipment {
+  id            String   @id @default(cuid())
+  projectId    String
+  name         String
+  category     String   // Helicopter, Vehicle, Machinery, Other
+  purchasePrice Decimal  @db.Decimal(15, 2)
+  acquisitionDate DateTime
+  serviceLifeYears Int
+  salvageValue Decimal? @db.Decimal(15, 2) // Optional, auto-calculated as 10% if not provided
+  serialNumber String?
+  registrationNumber String?
+  notes        String?  @db.Text
+  depreciationMethod String @default("straight_line") // straight_line, units_of_production
+  archived     Boolean  @default(false)
+  photosUrl    String[] // Array of photo URLs (up to 3)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  photos        EquipmentPhoto[]
+  
+  @@index([projectId])
+  @@map("equipment")
+}
+
+model EquipmentPhoto {
+  id          String   @id @default(cuid())
+  equipmentId String
+  url         String
+  alt         String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  
+  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  
+  @@index([equipmentId])
+  @@map("equipment_photos")
+}
+
+model OperatingParameters {
+  id                String   @id @default(cuid())
+  projectId         String
+  month             DateTime? // Optional: for historical tracking (null = current)
+  operatingHoursPerMonth Decimal @default(0) @db.Decimal(10, 2)
+  fuelCostPerHour   Decimal  @default(0) @db.Decimal(15, 2)
+  maintenanceCostPerHour Decimal @default(0) @db.Decimal(15, 2)
+  insuranceMonthly  Decimal  @default(0) @db.Decimal(15, 2)
+  staffSalariesMonthly Decimal @default(0) @db.Decimal(15, 2)
+  facilityRentMonthly Decimal @default(0) @db.Decimal(15, 2)
+  otherExpenses      Json?    // Array of {description, amount}
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId, month])
+  @@map("operating_parameters")
+}
+
+model FinancialCalculation {
+  id                String   @id @default(cuid())
+  projectId         String
+  month             DateTime? // For monthly calculations
+  calculationType   String   // monthly_cost, cost_per_hour, break_even, etc.
+  resultJson        Json     // Store full result as JSON
+  formula           String?  // Store the formula used
+  metadata          Json?    // Additional context
+  calculatedAt      DateTime @default(now())
+  expiresAt         DateTime? // For cache expiration
+  
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId, calculationType, calculatedAt])
+  @@index([projectId, month])
+  @@map("financial_calculations")
+}
+
+model AuditLog {
+  id            String   @id @default(cuid())
+  projectId     String?
+  userId        String
+  action        String   // create, update, delete, share, etc.
+  entityType    String   // project, equipment, member, etc.
+  entityId      String?
+  changesBefore Json?
+  changesAfter  Json?
+  createdAt     DateTime @default(now())
+  
+  project       Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId, createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+model ProjectShare {
+  id                String   @id @default(cuid())
+  projectId         String
+  sharedWithUserId  String
+  sharedByUserId    String
+  permissionLevel   String   @default("view") // view, edit, admin
+  sharedAt          DateTime @default(now())
+  revokedAt         DateTime?
+  
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sharedWithUser    User     @relation("SharedWithUser", fields: [sharedWithUserId], references: [id], onDelete: Cascade)
+  sharedByUser      User     @relation("SharedByUser", fields: [sharedByUserId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+  @@index([sharedWithUserId])
+  @@map("project_shares")
+}
