@@ -125,8 +125,7 @@ export default function AdminMonitoringPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* если у тебя были селекты диапазона / endpoint – верни их сюда и
-              связывай с setHours / setEndpoint */}
+          {/* сюда можно вернуть селект часов и endpoint, если они были ранее */}
           <Button
             variant="outline"
             size="sm"
@@ -138,7 +137,7 @@ export default function AdminMonitoringPage() {
         </div>
       </div>
 
-      {/* здесь верни свои карточки/графики/таблицы, используя metrics */}
+      {/* Здесь верни свои карточки, графики и таблицы, используя metrics */}
     </div>
   );
 }
