@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const updateProfileSchema = z.object({
   name: z.string().min(1).optional(),
   defaultCurrency: z.string().length(3).optional(),

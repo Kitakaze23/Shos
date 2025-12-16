@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

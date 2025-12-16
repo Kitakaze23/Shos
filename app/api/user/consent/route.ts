@@ -5,6 +5,8 @@ import { Errors, handleError } from "@/lib/errors"
 import { getConsentPreferences, updateConsentPreferences } from "@/lib/consent"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const consentSchema = z.object({
   analytics: z.boolean().optional(),
   marketing: z.boolean().optional(),

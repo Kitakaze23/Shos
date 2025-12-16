@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const updateNotificationsSchema = z.object({
   emailDigests: z.boolean().optional(),
   emailAlerts: z.boolean().optional(),

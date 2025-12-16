@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const deleteAccountSchema = z.object({
   password: z.string().min(1, "Password is required"),
 })
