@@ -6,6 +6,8 @@ import { Errors, handleError } from "@/lib/errors"
 import { generateMonthlyReport } from "@/lib/reports"
 import { cache, CacheKeys, CacheTTL } from "@/lib/cache"
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
