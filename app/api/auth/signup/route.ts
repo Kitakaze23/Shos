@@ -5,6 +5,8 @@ import { z } from "zod"
 import { sendVerificationEmail } from "@/lib/email"
 import crypto from "crypto"
 
+export const dynamic = "force-dynamic";
+
 const signupSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
