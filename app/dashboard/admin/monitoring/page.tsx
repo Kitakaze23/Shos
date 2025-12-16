@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast"
 import { Loader2, RefreshCw, TrendingUp, AlertCircle, Users, FolderOpen, FileText, Activity } from "lucide-react"
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
+export const dynamic = "force-dynamic";
+
 interface MetricsData {
   period: {
     hours: number
