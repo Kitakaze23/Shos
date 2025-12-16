@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { Errors, handleError } from "@/lib/errors"
 import { getAuditLogs } from "@/lib/audit"
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
