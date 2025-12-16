@@ -8,6 +8,8 @@ import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 import { invalidateProjectCache } from "@/lib/cache"
 
+export const dynamic = "force-dynamic";
+
 const createEquipmentSchema = z.object({
   name: z.string().min(1, "Equipment name is required"),
   category: z.string().min(1, "Category is required"),
