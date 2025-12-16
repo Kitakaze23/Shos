@@ -1,67 +1,80 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/hooks/use-toast"
-import { Loader2 } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+
+type FormData = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+type FormErrors = Partial<FormData>;
 
 export default function SignUpPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-  })
-  const [errors, setErrors] = useState<{
-    name?: string
-    email?: string
-    password?: string
-    confirmPassword?: string
-  }>({})
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const validate = () => {
-    const newErrors: typeof errors = {}
-    
+    const newErrors: FormErrors = {};
+
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+      newErrors.name = "Name is required";
     }
-    
+
     if (!formData.email) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email address"
+      newErrors.email = "Invalid email address";
     }
-    
+
     if (!formData.password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters"
+      newErrors.password = "Password must be at least 8 characters";
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match"
+      newErrors.confirmPassword = "Passwords do not match";
     }
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!validate()) {
-      return
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/auth/signup", {
@@ -72,75 +85,75 @@ export default function SignUpPage() {
           email: formData.email,
           password: formData.password,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
         toast({
           title: "Sign up failed",
           description: data.error || "An error occurred",
           variant: "destructive",
-        })
-        return
+        });
+        return;
       }
 
       toast({
         title: "Account created",
         description: "Please check your email to verify your account.",
-      })
+      });
 
-      router.push("/auth/signin")
+      router.push("/auth/signin");
     } catch (error) {
       toast({
         title: "An error occurred",
         description: "Please try again later",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const handleChange = (field: keyof typeof formData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData({ ...formData, [field]: e.target.value })
-    if (errors[field]) {
-      setErrors({ ...errors, [field]: undefined })
-    }
-  }
+  const handleChange =
+    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData({ ...formData, [field]: e.target.value });
+
+      if (errors[field]) {
+        setErrors({ ...errors, [field]: undefined });
+      }
+    };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
-          <CardDescription className="text-center">
-            Enter your information to get started
+        <CardHeader>
+          <CardTitle>Create Account</CardTitle>
+          <CardDescription>
+            Enter your information to get started.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <Input
                 id="name"
-                type="text"
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={handleChange("name")}
-                aria-invalid={errors.name ? "true" : "false"}
-                aria-describedby={errors.name ? "name-error" : undefined}
-                disabled={isLoading}
                 autoComplete="name"
               />
               {errors.name && (
-                <p id="name-error" className="text-sm text-destructive" role="alert">
+                <p className="text-sm text-destructive" role="alert">
                   {errors.name}
                 </p>
               )}
             </div>
+
+            {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -149,70 +162,72 @@ export default function SignUpPage() {
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange("email")}
-                aria-invalid={errors.email ? "true" : "false"}
-                aria-describedby={errors.email ? "email-error" : undefined}
-                disabled={isLoading}
                 autoComplete="email"
               />
               {errors.email && (
-                <p id="email-error" className="text-sm text-destructive" role="alert">
+                <p className="text-sm text-destructive" role="alert">
                   {errors.email}
                 </p>
               )}
             </div>
+
+            {/* Password */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="********"
                 value={formData.password}
                 onChange={handleChange("password")}
-                aria-invalid={errors.password ? "true" : "false"}
-                aria-describedby={errors.password ? "password-error" : undefined}
-                disabled={isLoading}
                 autoComplete="new-password"
               />
               {errors.password && (
-                <p id="password-error" className="text-sm text-destructive" role="alert">
+                <p className="text-sm text-destructive" role="alert">
                   {errors.password}
                 </p>
               )}
             </div>
+
+            {/* Confirm Password */}
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder="••••••••"
+                placeholder="********"
                 value={formData.confirmPassword}
                 onChange={handleChange("confirmPassword")}
-                aria-invalid={errors.confirmPassword ? "true" : "false"}
-                aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
-                disabled={isLoading}
                 autoComplete="new-password"
               />
               {errors.confirmPassword && (
-                <p id="confirmPassword-error" className="text-sm text-destructive" role="alert">
+                <p className="text-sm text-destructive" role="alert">
                   {errors.confirmPassword}
                 </p>
               )}
             </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Create Account
             </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <p className="text-sm text-center text-muted-foreground w-full">
+
+        <CardFooter className="flex justify-center text-sm">
+          <span className="text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-primary hover:underline">
-              Sign in
-            </Link>
-          </p>
+          </span>
+          <Link
+            href="/auth/signin"
+            className="ml-1 text-primary hover:underline"
+          >
+            Sign in
+          </Link>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

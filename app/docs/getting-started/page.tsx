@@ -1,235 +1,173 @@
-import { Metadata } from "next"
-import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { CheckCircle2, ArrowRight, Play } from "lucide-react"
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CheckCircle2, ArrowRight, Play } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Getting Started | Fleet Cost Tracker",
   description: "Quick start guide for Fleet Cost Tracker",
-}
+};
 
 export default function GettingStartedPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Getting Started</h1>
-        <p className="text-lg text-muted-foreground">
-          Get up and running with Fleet Cost Tracker in 5 minutes
-        </p>
-      </div>
-
-      {/* Video Tutorial */}
-      <Card className="mb-8">
+    <div className="space-y-6">
+      {/* Hero */}
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Play className="h-5 w-5" />
-            Quick Start Video (5 minutes)
-          </CardTitle>
+          <CardTitle>Getting Started</CardTitle>
           <CardDescription>
-            Watch a quick walkthrough of the platform
+            Get up and running with Fleet Cost Tracker in 5 minutes.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-            <p className="text-muted-foreground">
-              [Video placeholder - Add YouTube embed or video player]
-            </p>
+        <CardContent className="space-y-4">
+          <div className="aspect-video w-full rounded-md border border-dashed flex items-center justify-center text-sm text-muted-foreground">
+            <Play className="mr-2 h-4 w-4" />
+            Video placeholder – add YouTube embed or video player here.
           </div>
+          <p className="text-sm text-muted-foreground">
+            Follow the steps below to set up your first project, add equipment,
+            and start tracking costs.
+          </p>
         </CardContent>
       </Card>
 
-      {/* Step-by-Step Guide */}
-      <div className="space-y-6">
+      {/* Steps */}
+      <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Step 1: Create an Account</CardTitle>
-            <CardDescription>Sign up for free</CardDescription>
+            <CardTitle>1. Create Your First Project</CardTitle>
+            <CardDescription>
+              Set up a project for each fleet, aircraft, or business unit.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Click &quot;Sign Up&quot; on the homepage</li>
-              <li>Enter your email and create a password</li>
-              <li>Verify your email address</li>
-              <li>Complete your profile</li>
-            </ol>
-            <Button asChild>
-              <Link href="/auth/signup">Create Account</Link>
-            </Button>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              Use the <strong>New Project</strong> button on the dashboard to
+              create a project. Give it a clear name and description so your
+              team understands what it covers.
+            </p>
+            <p>
+              <strong>Tip:</strong> You can create multiple projects for
+              different fleets or departments.
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Step 2: Create Your First Project</CardTitle>
-            <CardDescription>Set up a project for your fleet</CardDescription>
+            <CardTitle>2. Add Equipment</CardTitle>
+            <CardDescription>
+              Enter purchase details and key operating parameters.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the Projects page</li>
-              <li>Click &quot;New Project&quot;</li>
-              <li>Enter project name and description</li>
-              <li>Select your currency (RUB, USD, EUR, etc.)</li>
-              <li>Click &quot;Create Project&quot;</li>
-            </ol>
-            <div className="bg-muted p-4 rounded-lg">
-              <p className="text-sm">
-                <strong>Tip:</strong> You can create multiple projects for different fleets or departments.
-              </p>
-            </div>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              For each aircraft or piece of equipment, add purchase price,
+              service life, and expected annual usage.
+            </p>
+            <p>
+              <strong>Note:</strong> Salvage value is automatically calculated
+              as 10% of purchase price, but you can override it.
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Step 3: Add Equipment</CardTitle>
-            <CardDescription>Add your first piece of equipment</CardDescription>
+            <CardTitle>3. Define Ownership & Allocation</CardTitle>
+            <CardDescription>
+              Choose how costs are shared across owners or business units.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Open your project</li>
-              <li>Go to the &quot;Equipment&quot; tab</li>
-              <li>Click &quot;Add Equipment&quot;</li>
-              <li>Fill in the details:
-                <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
-                  <li>Equipment name</li>
-                  <li>Purchase price</li>
-                  <li>Acquisition date</li>
-                  <li>Service life (years)</li>
-                  <li>Category (Helicopter, Vehicle, etc.)</li>
-                </ul>
-              </li>
-              <li>Click &quot;Save&quot;</li>
-            </ol>
-            <div className="bg-muted p-4 rounded-lg">
-              <p className="text-sm">
-                <strong>Note:</strong> Salvage value is automatically calculated as 10% of purchase price, but you can override it.
-              </p>
-            </div>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              Select an allocation method: <strong>by hours</strong>,{" "}
+              <strong>by share</strong>, or <strong>equal</strong>. Then enter
+              ownership shares or usage assumptions.
+            </p>
+            <p>
+              <strong>Note:</strong> Total ownership share should not exceed
+              100%.
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Step 4: Set Operating Parameters</CardTitle>
-            <CardDescription>Configure monthly operating costs</CardDescription>
+            <CardTitle>4. Review Reports</CardTitle>
+            <CardDescription>
+              Analyze cost per hour, total cost, and ownership splits.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the &quot;Operating Parameters&quot; tab</li>
-              <li>Enter operating hours per month</li>
-              <li>Set fuel cost per hour</li>
-              <li>Set maintenance cost per hour</li>
-              <li>Add fixed costs:
-                <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
-                  <li>Insurance (monthly)</li>
-                  <li>Staff salaries (monthly)</li>
-                  <li>Facility rent (monthly)</li>
-                  <li>Other expenses</li>
-                </ul>
-              </li>
-              <li>View real-time cost calculations</li>
-            </ol>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Step 5: Add Team Members</CardTitle>
-            <CardDescription>Invite team members and set ownership</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the &quot;Team Members&quot; tab</li>
-              <li>Click &quot;Add Member&quot;</li>
-              <li>Enter member email or select existing user</li>
-              <li>Set ownership share (%)</li>
-              <li>Set operating hours per month</li>
-              <li>Choose role (Admin, Member, Viewer)</li>
-              <li>Click &quot;Add&quot;</li>
-            </ol>
-            <div className="bg-muted p-4 rounded-lg">
-              <p className="text-sm">
-                <strong>Note:</strong> Total ownership share should not exceed 100%.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Step 6: View Reports</CardTitle>
-            <CardDescription>Generate and export financial reports</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the &quot;Reports&quot; tab</li>
-              <li>Select report type:
-                <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
-                  <li>Monthly Summary</li>
-                  <li>Annual Forecast</li>
-                  <li>Depreciation Schedule</li>
-                  <li>Scenario Analysis</li>
-                </ul>
-              </li>
-              <li>View interactive charts and tables</li>
-              <li>Export as PDF, Excel, or CSV</li>
-              <li>Email reports to team members</li>
-            </ol>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              Use the built‑in reports to track trends, compare scenarios, and
+              export results for your team or investors.
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Next Steps */}
-      <Card className="mt-8">
+      {/* Next steps */}
+      <Card>
         <CardHeader>
           <CardTitle>Next Steps</CardTitle>
+          <CardDescription>
+            Explore more advanced features when you are ready.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <div className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
-              <div>
-                <p className="font-medium">Explore Advanced Features</p>
-                <p className="text-sm text-muted-foreground">
-                  Learn about scenario analysis, cost allocation methods, and more
-                </p>
-              </div>
+        <CardContent className="grid gap-4 md:grid-cols-3">
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <span>Explore Advanced Features</span>
             </div>
-            <div className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
-              <div>
-                <p className="font-medium">Watch Video Tutorials</p>
-                <p className="text-sm text-muted-foreground">
-                  Step-by-step video guides for all features
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
-              <div>
-                <p className="font-medium">Read Best Practices</p>
-                <p className="text-sm text-muted-foreground">
-                  Tips for accurate financial modeling
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-4 pt-4">
-            <Button asChild>
-              <Link href="/docs/tutorials">
-                Watch Tutorials
-                <ArrowRight className="ml-2 h-4 w-4" />
+            <p>
+              Learn about scenario analysis, cost allocation methods, and other
+              tools for deeper financial modeling.
+            </p>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/docs/best-practices">
+                Learn more
+                <ArrowRight className="ml-1 h-3 w-3" />
               </Link>
             </Button>
-            <Button asChild variant="outline">
+          </div>
+
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <span>Watch Video Tutorials</span>
+            </div>
+            <p>Step‑by‑step video guides for all major features.</p>
+            <Button variant="outline" size="sm" disabled>
+              Coming soon
+            </Button>
+          </div>
+
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <span>Read Best Practices</span>
+            </div>
+            <p>Tips for accurate financial modeling and cost tracking.</p>
+            <Button asChild variant="outline" size="sm">
               <Link href="/docs/best-practices">
-                Best Practices
+                View best practices
+                <ArrowRight className="ml-1 h-3 w-3" />
               </Link>
             </Button>
           </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

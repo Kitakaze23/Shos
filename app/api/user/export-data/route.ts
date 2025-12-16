@@ -1,19 +1,23 @@
-import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/db"
-import { Errors, handleError } from "@/lib/errors"
-import Decimal from "decimal.js"
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 
-export async function GET(request: NextRequest) {
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import { Errors, handleError } from "@/lib/errors";
+import Decimal from "decimal.js";
+
+// Роут всегда динамический (сессия + БД)
+export const dynamic = "force-dynamic";
+
+export async function GET(_request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
-      return handleError(Errors.unauthorized())
+      return handleError(Errors.unauthorized());
     }
 
-    const userId = session.user.id
+    const userId = session.user.id;
 
     // Export all user data (GDPR compliance)
     const userData = {
@@ -32,6 +36,7 @@ export async function GET(request: NextRequest) {
           lastLogin: true,
         },
       }),
+
       projects: await prisma.project.findMany({
         where: { ownerId: userId },
         include: {
@@ -50,6 +55,7 @@ export async function GET(request: NextRequest) {
           operatingParams: true,
         },
       }),
+
       projectMemberships: await prisma.projectMember.findMany({
         where: { userId },
         include: {
@@ -62,11 +68,13 @@ export async function GET(request: NextRequest) {
           },
         },
       }),
+
       activityLogs: await prisma.activityLog.findMany({
         where: { userId },
         orderBy: { createdAt: "desc" },
         take: 1000, // Last 1000 activities
       }),
+
       apiKeys: await prisma.apiKey.findMany({
         where: { userId },
         select: {
@@ -77,6 +85,7 @@ export async function GET(request: NextRequest) {
           createdAt: true,
         },
       }),
+
       organizations: await prisma.organization.findMany({
         where: { ownerId: userId },
         include: {
@@ -93,6 +102,7 @@ export async function GET(request: NextRequest) {
           },
         },
       }),
+
       organizationMemberships: await prisma.organizationMember.findMany({
         where: { userId },
         include: {
@@ -105,29 +115,32 @@ export async function GET(request: NextRequest) {
           },
         },
       }),
-      exportedAt: new Date().toISOString(),
-    }
 
-    // Convert Decimal values to strings for JSON serialization
+      exportedAt: new Date().toISOString(),
+    };
+
+    // Convert Decimal and Date values to JSON‑safe strings
     const serializedData = JSON.parse(
-      JSON.stringify(userData, (key, value) => {
+      JSON.stringify(userData, (_key, value) => {
         if (value instanceof Decimal) {
-          return value.toString()
+          return value.toString();
         }
         if (value instanceof Date) {
-          return value.toISOString()
+          return value.toISOString();
         }
-        return value
-      })
-    )
+        return value;
+      }),
+    );
 
     return NextResponse.json(serializedData, {
       headers: {
         "Content-Type": "application/json",
-        "Content-Disposition": `attachment; filename="user-data-export-${new Date().toISOString().split("T")[0]}.json"`,
+        "Content-Disposition": `attachment; filename="user-data-export-${
+          new Date().toISOString().split("T")[0]
+        }.json"`,
       },
-    })
+    });
   } catch (error) {
-    return handleError(error)
+    return handleError(error);
   }
 }

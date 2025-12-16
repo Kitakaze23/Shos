@@ -1,18 +1,35 @@
-import { Metadata } from "next"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Metadata } from "next";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "FAQ | Fleet Cost Tracker",
   description: "Frequently asked questions about Fleet Cost Tracker",
-}
+};
 
-const faqs = [
+type FAQQuestion = {
+  q: string;
+  a: string;
+};
+
+type FAQCategory = {
+  category: string;
+  questions: FAQQuestion[];
+};
+
+const faqs: FAQCategory[] = [
   {
     category: "Getting Started",
     questions: [
@@ -156,72 +173,56 @@ const faqs = [
       },
     ],
   },
-]
+];
 
 export default function FAQPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
-        <p className="text-lg text-muted-foreground">
-          Find answers to common questions about Fleet Cost Tracker
-        </p>
-      </div>
-
-      <div className="space-y-6">
-        {faqs.map((category) => (
-          <Card key={category.category}>
-            <CardHeader>
-              <CardTitle>{category.category}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                {category.questions.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left">
-                      {faq.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      {faq.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card className="mt-8">
+    <div className="space-y-6">
+      <Card>
         <CardHeader>
-          <CardTitle>Still have questions?</CardTitle>
+          <CardTitle>Frequently Asked Questions</CardTitle>
           <CardDescription>
-            Can&apos;t find what you&apos;re looking for? We&apos;re here to help!
+            Find answers to common questions about Fleet Cost Tracker.
           </CardDescription>
         </CardHeader>
+        <CardContent className="text-sm text-muted-foreground space-y-1">
+          <p>
+            <strong>Email:</strong> support@yourdomain.com
+          </p>
+          <p>
+            <strong>Documentation:</strong> Full documentation is available in
+            the Docs section.
+          </p>
+          <p>
+            <strong>Troubleshooting:</strong> Check common issues and solutions
+            in the help center.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
         <CardContent>
-          <div className="space-y-2">
-            <p>
-              <strong>Email:</strong>{" "}
-              <a href="mailto:support@yourdomain.com" className="text-primary hover:underline">
-                support@yourdomain.com
-              </a>
-            </p>
-            <p>
-              <strong>Documentation:</strong>{" "}
-              <a href="/docs" className="text-primary hover:underline">
-                View full documentation
-              </a>
-            </p>
-            <p>
-              <strong>Troubleshooting:</strong>{" "}
-              <a href="/docs/troubleshooting" className="text-primary hover:underline">
-                Common issues and solutions
-              </a>
-            </p>
-          </div>
+          <Accordion type="multiple" className="w-full">
+            {faqs.map((section) => (
+              <AccordionItem key={section.category} value={section.category}>
+                <AccordionTrigger>{section.category}</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-4">
+                    {section.questions.map((item) => (
+                      <div key={item.q}>
+                        <p className="font-medium">{item.q}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {item.a}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
