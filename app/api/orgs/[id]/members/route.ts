@@ -6,6 +6,8 @@ import { z } from "zod"
 import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 
+export const dynamic = "force-dynamic";
+
 const addMemberSchema = z.object({
   userId: z.string().optional(),
   email: z.string().email().optional(),
