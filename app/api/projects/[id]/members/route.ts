@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import Decimal from "decimal.js"
 
+export const dynamic = "force-dynamic";
+
 const addMemberSchema = z.object({
   userId: z.string().optional(),
   email: z.string().email().optional(),
