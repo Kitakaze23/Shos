@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { Errors, handleError } from "@/lib/errors"
 import { runDataRetentionCleanup } from "@/lib/data-retention"
 
+export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
