@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
@@ -45,11 +45,7 @@ export function MonthlySummaryReport({ projectId, currency }: MonthlySummaryRepo
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
 
-  useEffect(() => {
-    fetchReport()
-  }, [projectId, selectedMonth, selectedYear])
-
-  const fetchReport = async () => {
+  const fetchReport = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(
@@ -74,7 +70,11 @@ export function MonthlySummaryReport({ projectId, currency }: MonthlySummaryRepo
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [projectId, selectedMonth, selectedYear, toast])
+
+  useEffect(() => {
+    fetchReport()
+  }, [fetchReport])
 
   const handleExport = async (format: "pdf" | "excel" | "csv") => {
     try {

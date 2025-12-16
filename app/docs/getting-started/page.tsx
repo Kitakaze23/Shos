@@ -48,7 +48,7 @@ export default function GettingStartedPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
-              <li>Click "Sign Up" on the homepage</li>
+              <li>Click &quot;Sign Up&quot; on the homepage</li>
               <li>Enter your email and create a password</li>
               <li>Verify your email address</li>
               <li>Complete your profile</li>
@@ -67,10 +67,10 @@ export default function GettingStartedPage() {
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
               <li>Go to the Projects page</li>
-              <li>Click "New Project"</li>
+              <li>Click &quot;New Project&quot;</li>
               <li>Enter project name and description</li>
               <li>Select your currency (RUB, USD, EUR, etc.)</li>
-              <li>Click "Create Project"</li>
+              <li>Click &quot;Create Project&quot;</li>
             </ol>
             <div className="bg-muted p-4 rounded-lg">
               <p className="text-sm">
@@ -88,8 +88,8 @@ export default function GettingStartedPage() {
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
               <li>Open your project</li>
-              <li>Go to the "Equipment" tab</li>
-              <li>Click "Add Equipment"</li>
+              <li>Go to the &quot;Equipment&quot; tab</li>
+              <li>Click &quot;Add Equipment&quot;</li>
               <li>Fill in the details:
                 <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
                   <li>Equipment name</li>
@@ -99,7 +99,7 @@ export default function GettingStartedPage() {
                   <li>Category (Helicopter, Vehicle, etc.)</li>
                 </ul>
               </li>
-              <li>Click "Save"</li>
+              <li>Click &quot;Save&quot;</li>
             </ol>
             <div className="bg-muted p-4 rounded-lg">
               <p className="text-sm">
@@ -116,7 +116,7 @@ export default function GettingStartedPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the "Operating Parameters" tab</li>
+              <li>Go to the &quot;Operating Parameters&quot; tab</li>
               <li>Enter operating hours per month</li>
               <li>Set fuel cost per hour</li>
               <li>Set maintenance cost per hour</li>
@@ -140,13 +140,13 @@ export default function GettingStartedPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the "Team Members" tab</li>
-              <li>Click "Add Member"</li>
+              <li>Go to the &quot;Team Members&quot; tab</li>
+              <li>Click &quot;Add Member&quot;</li>
               <li>Enter member email or select existing user</li>
               <li>Set ownership share (%)</li>
               <li>Set operating hours per month</li>
               <li>Choose role (Admin, Member, Viewer)</li>
-              <li>Click "Add"</li>
+              <li>Click &quot;Add&quot;</li>
             </ol>
             <div className="bg-muted p-4 rounded-lg">
               <p className="text-sm">
@@ -163,7 +163,7 @@ export default function GettingStartedPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ol className="list-decimal list-inside space-y-2">
-              <li>Go to the "Reports" tab</li>
+              <li>Go to the &quot;Reports&quot; tab</li>
               <li>Select report type:
                 <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
                   <li>Monthly Summary</li>

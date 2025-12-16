@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -39,11 +39,7 @@ export default function ProjectSettingsPage() {
     costAllocationMethod: "by_hours",
   })
 
-  useEffect(() => {
-    fetchProject()
-  }, [params.id])
-
-  const fetchProject = async () => {
+  const fetchProject = useCallback(async () => {
     try {
       const response = await fetch(`/api/projects/${params.id}`)
       if (response.ok) {
@@ -65,7 +61,11 @@ export default function ProjectSettingsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [params.id, toast])
+
+  useEffect(() => {
+    fetchProject()
+  }, [fetchProject])
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -227,11 +227,11 @@ export default function ProjectSettingsPage() {
               </Select>
               <p className="text-xs text-muted-foreground">
                 {formData.costAllocationMethod === "by_hours" && 
-                  "Costs are allocated based on each member's operating hours per month."}
+                  "Costs are allocated based on each member&apos;s operating hours per month."}
                 {formData.costAllocationMethod === "equal" && 
                   "Costs are split equally among all active team members."}
                 {formData.costAllocationMethod === "percentage" && 
-                  "Costs are allocated based on each member's ownership share percentage."}
+                  "Costs are allocated based on each member&apos;s ownership share percentage."}
               </p>
             </div>
           </CardContent>

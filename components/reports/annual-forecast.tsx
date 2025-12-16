@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Decimal from "decimal.js"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -40,11 +40,7 @@ export function AnnualForecastReport({ projectId, currency }: AnnualForecastRepo
   const [startMonth, setStartMonth] = useState(new Date().getMonth() + 1)
   const [startYear, setStartYear] = useState(new Date().getFullYear())
 
-  useEffect(() => {
-    fetchForecast()
-  }, [projectId, startMonth, startYear])
-
-  const fetchForecast = async () => {
+  const fetchForecast = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(
@@ -69,7 +65,11 @@ export function AnnualForecastReport({ projectId, currency }: AnnualForecastRepo
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [projectId, startMonth, startYear, toast])
+
+  useEffect(() => {
+    fetchForecast()
+  }, [fetchForecast])
 
   const handleExport = async (format: "pdf" | "excel" | "csv") => {
     try {

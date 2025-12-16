@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
@@ -33,11 +33,7 @@ export function DepreciationScheduleReport({
   const [isLoading, setIsLoading] = useState(true)
   const [scheduleData, setScheduleData] = useState<any[]>([])
 
-  useEffect(() => {
-    fetchSchedule()
-  }, [projectId])
-
-  const fetchSchedule = async () => {
+  const fetchSchedule = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/projects/${projectId}/reports/depreciation`)
@@ -60,7 +56,11 @@ export function DepreciationScheduleReport({
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [projectId, toast])
+
+  useEffect(() => {
+    fetchSchedule()
+  }, [fetchSchedule])
 
   const handleExport = async (format: "pdf" | "excel" | "csv") => {
     try {

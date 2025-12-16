@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">1. Introduction</h2>
           <p>
-            Fleet Cost Tracker ("we", "our", or "us") is committed to protecting your privacy.
+            Fleet Cost Tracker (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy.
             This Privacy Policy explains how we collect, use, disclose, and safeguard your
             information when you use our service.
           </p>
@@ -122,7 +122,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mt-8 mb-4">9. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">9. Children&apos;s Privacy</h2>
           <p>
             Our service is not intended for children under 13 years of age. We do not knowingly
             collect personal information from children.
@@ -133,7 +133,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold mt-8 mb-4">10. Changes to This Policy</h2>
           <p>
             We may update our Privacy Policy from time to time. We will notify you of any changes
-            by posting the new Privacy Policy on this page and updating the "Last updated" date.
+            by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
           </p>
         </section>
 

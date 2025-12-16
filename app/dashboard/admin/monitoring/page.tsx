@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -56,7 +56,7 @@ export default function MonitoringPage() {
   const [hours, setHours] = useState(24)
   const { toast } = useToast()
 
-  const fetchMetrics = async () => {
+  const fetchMetrics = useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await fetch(`/api/admin/metrics?hours=${hours}`)
@@ -74,13 +74,13 @@ export default function MonitoringPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [hours, toast])
 
   useEffect(() => {
     fetchMetrics()
     const interval = setInterval(fetchMetrics, 60000) // Refresh every minute
     return () => clearInterval(interval)
-  }, [hours])
+  }, [fetchMetrics])
 
   if (isLoading && !metrics) {
     return (

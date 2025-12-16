@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -60,12 +61,7 @@ export default function ProfilePage() {
     companyRole: "",
   })
 
-  useEffect(() => {
-    fetchProfile()
-    fetchNotifications()
-  }, [])
-
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const response = await fetch("/api/user/profile")
       if (response.ok) {
@@ -87,9 +83,9 @@ export default function ProfilePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const response = await fetch("/api/user/notifications")
       if (response.ok) {
@@ -99,7 +95,12 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("Failed to load notifications", error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchProfile()
+    fetchNotifications()
+  }, [fetchProfile, fetchNotifications])
 
   const handleSaveProfile = async () => {
     setIsSaving(true)
@@ -520,7 +521,7 @@ function TwoFactorSection({ profile, onUpdate }: { profile: UserProfile | null; 
         ) : qrCode ? (
           <div className="space-y-4">
             <p className="text-sm">Scan this QR code with your authenticator app:</p>
-            <img src={qrCode} alt="2FA QR Code" className="mx-auto" />
+            <Image src={qrCode} alt="2FA QR Code" className="mx-auto" width={200} height={200} />
             <div className="space-y-2">
               <Label htmlFor="verification-code">Enter verification code</Label>
               <Input
@@ -757,11 +758,7 @@ function ApiKeysSection() {
   const [newKeyName, setNewKeyName] = useState("")
   const [newKey, setNewKey] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchApiKeys()
-  }, [])
-
-  const fetchApiKeys = async () => {
+  const fetchApiKeys = useCallback(async () => {
     try {
       const response = await fetch("/api/user/api-keys")
       if (response.ok) {
@@ -777,7 +774,11 @@ function ApiKeysSection() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    fetchApiKeys()
+  }, [fetchApiKeys])
 
   const handleCreateKey = async () => {
     if (!newKeyName.trim()) {

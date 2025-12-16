@@ -15,7 +15,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">1. Agreement to Terms</h2>
           <p>
-            By accessing or using Fleet Cost Tracker ("the Service"), you agree to be bound by
+            By accessing or using Fleet Cost Tracker (&quot;the Service&quot;), you agree to be bound by
             these Terms of Service. If you disagree with any part of these terms, you may not
             access the Service.
           </p>

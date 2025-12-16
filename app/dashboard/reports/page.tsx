@@ -31,7 +31,7 @@ export default async function ReportsPage() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            Navigate to a project and click "View Reports" to access:
+            Navigate to a project and click &quot;View Reports&quot; to access:
           </p>
           <div className="grid gap-4 mt-4 sm:grid-cols-2">
             <div className="flex items-start gap-3 p-4 border rounded-lg">

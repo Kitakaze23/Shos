@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -52,11 +52,7 @@ export default function TeamMembers({ projectId }: { projectId: string }) {
     operatingHoursPerMonth: "0",
   })
 
-  useEffect(() => {
-    fetchMembers()
-  }, [projectId])
-
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       const response = await fetch(`/api/projects/${projectId}/members`)
       if (response.ok) {
@@ -72,7 +68,11 @@ export default function TeamMembers({ projectId }: { projectId: string }) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [projectId, toast])
+
+  useEffect(() => {
+    fetchMembers()
+  }, [fetchMembers])
 
   const handleOpenDialog = (member?: TeamMember) => {
     if (member) {

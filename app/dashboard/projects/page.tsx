@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { analytics } from "@/lib/analytics"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -53,11 +53,7 @@ export default function ProjectsPage() {
     currency: "USD",
   })
 
-  useEffect(() => {
-    fetchProjects()
-  }, [])
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       const response = await fetch("/api/projects")
       if (response.ok) {
@@ -79,7 +75,11 @@ export default function ProjectsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    fetchProjects()
+  }, [fetchProjects])
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault()

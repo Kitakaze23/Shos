@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, TrendingUp, Clock, Target } from "lucide-react"
@@ -44,14 +44,7 @@ export default function ProjectDashboard({
   const [data, setData] = useState<FinancialData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    fetchCalculations()
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchCalculations, 30000)
-    return () => clearInterval(interval)
-  }, [projectId])
-
-  const fetchCalculations = async () => {
+  const fetchCalculations = useCallback(async () => {
     try {
       const response = await fetch(`/api/projects/${projectId}/calculations`)
       if (response.ok) {
@@ -73,7 +66,14 @@ export default function ProjectDashboard({
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [projectId, toast])
+
+  useEffect(() => {
+    fetchCalculations()
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchCalculations, 30000)
+    return () => clearInterval(interval)
+  }, [fetchCalculations])
 
   if (isLoading) {
     return (

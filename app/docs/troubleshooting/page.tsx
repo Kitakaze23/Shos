@@ -198,7 +198,7 @@ export default function TroubleshootingPage() {
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Before You Start</AlertTitle>
         <AlertDescription>
-          Try these quick fixes first: refresh the page, clear browser cache, check your internet connection, and ensure you're using the latest browser version.
+          Try these quick fixes first: refresh the page, clear browser cache, check your internet connection, and ensure you&apos;re using the latest browser version.
         </AlertDescription>
       </Alert>
 
@@ -233,7 +233,7 @@ export default function TroubleshootingPage() {
         <CardHeader>
           <CardTitle>Still Need Help?</CardTitle>
           <CardDescription>
-            If you've tried the solutions above and still have issues, we're here to help.
+            If you&apos;ve tried the solutions above and still have issues, we&apos;re here to help.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

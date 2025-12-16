@@ -196,7 +196,7 @@ export default function FAQPage() {
         <CardHeader>
           <CardTitle>Still have questions?</CardTitle>
           <CardDescription>
-            Can't find what you're looking for? We're here to help!
+            Can&apos;t find what you&apos;re looking for? We&apos;re here to help!
           </CardDescription>
         </CardHeader>
         <CardContent>
