@@ -1,23 +1,25 @@
-"use client"
+"use client";
 
-import Script from "next/script"
-import { useEffect } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
-import { trackPageView } from "@/lib/analytics"
+import Script from "next/script";
+import { Suspense, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { trackPageView } from "@/lib/analytics";
 
-export function GoogleAnalytics() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+function GoogleAnalyticsInner() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname) {
-      const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "")
-      trackPageView(url)
+      const url =
+        pathname +
+        (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+      trackPageView(url);
     }
-  }, [pathname, searchParams])
+  }, [pathname, searchParams]);
 
   if (!process.env.NEXT_PUBLIC_GTAG) {
-    return null
+    return null;
   }
 
   return (
@@ -41,5 +43,13 @@ export function GoogleAnalytics() {
         }}
       />
     </>
-  )
+  );
+}
+
+export function GoogleAnalytics() {
+  return (
+    <Suspense>
+      <GoogleAnalyticsInner />
+    </Suspense>
+  );
 }
