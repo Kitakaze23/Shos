@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { generatePDFReport, generateFileName } from "@/lib/exports/pdf"
 import { generateMonthlyReport, generateAnnualForecast, generateDepreciationSchedule } from "@/lib/reports"
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }

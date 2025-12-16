@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { generateScenarioAnalysis } from "@/lib/reports"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const scenarioSchema = z.object({
   name: z.string().min(1),
   operatingHoursMultiplier: z.number().optional(),
