@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import Decimal from "decimal.js"
 
+export const dynamic = "force-dynamic";
+
 const updateEquipmentSchema = z.object({
   name: z.string().min(1).optional(),
   category: z.string().optional(),
