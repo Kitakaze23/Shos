@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 
+export const dynamic = "force-dynamic";
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string; shareId: string } }

@@ -6,6 +6,8 @@ import { z } from "zod"
 import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 
+export const dynamic = "force-dynamic";
+
 const shareProjectSchema = z.object({
   sharedWithUserId: z.string().min(1, "User ID is required"),
   permissionLevel: z.enum(["view", "edit", "admin"]).default("view"),
