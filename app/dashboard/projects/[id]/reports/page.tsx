@@ -12,6 +12,8 @@ import { AnnualForecastReport } from "@/components/reports/annual-forecast"
 import { DepreciationScheduleReport } from "@/components/reports/depreciation-schedule"
 import { ScenarioAnalysisReport } from "@/components/reports/scenario-analysis"
 
+export const dynamic = "force-dynamic";
+
 export default function ReportsPage() {
   const params = useParams()
   const { toast } = useToast()

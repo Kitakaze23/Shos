@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 
+export const dynamic = "force-dynamic";
+
 const CURRENCIES = [
   "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "BRL",
 ]

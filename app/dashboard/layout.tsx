@@ -17,6 +17,8 @@ import { Settings, User, BookOpen } from "lucide-react"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { PageTransition } from "@/components/common/page-transition"
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
 }: {

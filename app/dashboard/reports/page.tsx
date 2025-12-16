@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { FileText, TrendingUp, Calendar, BarChart3 } from "lucide-react"
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportsPage() {
   const session = await getServerSession(authOptions)
 

@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+export const dynamic = "force-dynamic";
+
 interface Project {
   id: string
   name: string

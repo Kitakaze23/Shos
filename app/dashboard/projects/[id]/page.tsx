@@ -26,6 +26,8 @@ import { EquipmentList } from "@/components/equipment-list"
 import { OperatingParametersForm } from "@/components/operating-parameters-form"
 import { TeamMembersList } from "@/components/team-members-list"
 
+export const dynamic = "force-dynamic";
+
 interface Project {
   id: string
   name: string

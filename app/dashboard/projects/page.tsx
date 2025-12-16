@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
+export const dynamic = "force-dynamic";
+
 interface Project {
   id: string
   name: string
