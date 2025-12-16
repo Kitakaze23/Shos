@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import { performanceMiddleware } from "@/middleware-performance"
 
+export const dynamic = "force-dynamic";
+
 const createProjectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
   description: z.string().optional().nullable(),
