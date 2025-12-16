@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 type MetricsResponse = {
   period: {
     hours: number;
