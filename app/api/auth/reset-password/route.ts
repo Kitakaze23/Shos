@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
 
+export const dynamic = "force-dynamic";
+
 const resetPasswordSchema = z.object({
   token: z.string().min(1, "Token is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
