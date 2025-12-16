@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-// импортируй свои UI‑компоненты (Skeleton, Card, Charts и т.п.) как было
 
 type MetricsResponse = {
   period: {
@@ -64,7 +63,7 @@ type MetricsResponse = {
 export default function AdminMonitoringPage() {
   const [metrics, setMetrics] = useState<MetricsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hours, setHours] = useState(24);
+  const [hours, setHours] = useState<number>(24);
   const [endpoint, setEndpoint] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
 
@@ -106,9 +105,6 @@ export default function AdminMonitoringPage() {
     return () => clearInterval(interval);
   }, [fetchMetrics]);
 
-  // дальше оставь твою разметку, только используй metrics/isLoading/error как сейчас
-  // пример заголовка:
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
@@ -121,9 +117,16 @@ export default function AdminMonitoringPage() {
               ? `${metrics.period.hours}h period`
               : "No metrics available"}
           </p>
+          {error && (
+            <p className="mt-1 text-xs text-red-500">
+              {error}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
+          {/* если у тебя были селекты диапазона / endpoint – верни их сюда и
+              связывай с setHours / setEndpoint */}
           <Button
             variant="outline"
             size="sm"
@@ -135,7 +138,7 @@ export default function AdminMonitoringPage() {
         </div>
       </div>
 
-      {/* здесь твои карточки, графики и таблицы, которые уже были */}
+      {/* здесь верни свои карточки/графики/таблицы, используя metrics */}
     </div>
   );
 }
