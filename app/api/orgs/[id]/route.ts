@@ -7,6 +7,8 @@ import { Errors, handleError } from "@/lib/errors"
 import { createAuditLog } from "@/lib/audit"
 import { invalidateProjectCache } from "@/lib/cache"
 
+export const dynamic = "force-dynamic";
+
 const updateOrgSchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().optional().nullable(),
