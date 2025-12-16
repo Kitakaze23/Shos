@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import Decimal from "decimal.js"
 
+export const dynamic = "force-dynamic";
+
 const updateMemberSchema = z.object({
   role: z.enum(["owner", "admin", "member", "viewer"]).optional(),
   ownershipShare: z.union([z.string(), z.number()]).optional().transform((val) => 
