@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db"
 import { z } from "zod"
 import Decimal from "decimal.js"
 
+export const dynamic = "force-dynamic";
+
 const updateOperatingParamsSchema = z.object({
   operatingHoursPerMonth: z.union([z.string(), z.number()]).transform((val) => 
     new Decimal(val).toString()
