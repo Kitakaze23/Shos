@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { Providers } from "./providers"
 import { GoogleAnalytics } from "@/components/analytics/google-analytics"
 
+export const dynamic = "force-dynamic";
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {

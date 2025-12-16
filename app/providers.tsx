@@ -6,6 +6,8 @@ import { useState } from "react"
 import { ProjectProvider } from "@/context/project-context"
 import { ThemeProvider } from "@/context/theme-context"
 
+export const dynamic = "force-dynamic";
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
