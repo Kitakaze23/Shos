@@ -6,6 +6,8 @@ import { z } from "zod"
 import crypto from "crypto"
 import bcrypt from "bcryptjs"
 
+export const dynamic = "force-dynamic";
+
 const createApiKeySchema = z.object({
   name: z.string().min(1, "Name is required"),
   expiresInDays: z.number().optional(),
