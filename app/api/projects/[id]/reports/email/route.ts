@@ -8,6 +8,8 @@ import { sendVerificationEmail } from "@/lib/email"
 import { Resend } from "resend"
 import { z } from "zod"
 
+export const dynamic = "force-dynamic";
+
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const emailReportSchema = z.object({
